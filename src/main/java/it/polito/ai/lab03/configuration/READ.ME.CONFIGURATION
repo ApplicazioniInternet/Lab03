@@ -1,0 +1,3 @@
+In questo package ci andranno le classi per configurare:
+1) autenticazione con oauth2;
+2) configurare database e parametri per connessione al database.
