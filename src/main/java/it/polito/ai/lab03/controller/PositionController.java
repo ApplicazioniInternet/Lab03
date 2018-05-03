@@ -1,10 +1,13 @@
 package it.polito.ai.lab03.controller;
 
+import it.polito.ai.lab03.dbinteractions.Position;
 import it.polito.ai.lab03.service.PositionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * Controller per tutte le posizioni. Dentro avrà i singoli metodi che mapperanno url più specifiche.
