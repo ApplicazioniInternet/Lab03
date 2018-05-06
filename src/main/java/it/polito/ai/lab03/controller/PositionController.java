@@ -12,6 +12,8 @@ import java.util.List;
 
 /**
  * Controller per tutte le posizioni. Dentro avrà i singoli metodi che mapperanno url più specifiche.
+ * Dovrò ovviamente considerare solo le posizioni di un certo utente, che discriminerò andando a guardare
+ * il token che mi arriverà nell'header della richiesta.
  * Al suo interno conterrà:
  *
  *      1) un PositionService, che è una classe appartenente allo strato di servizio, la quale sarà responsabile
