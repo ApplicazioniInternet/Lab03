@@ -23,7 +23,7 @@ public class PositionController {
     @Autowired
     private PositionService positionService;
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.OK)
     public @ResponseBody
     List<Position> getAll(){ // Bisognerebbe creare la classe Position che risiede nel data layer.
