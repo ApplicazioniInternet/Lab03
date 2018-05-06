@@ -1,11 +1,9 @@
 package it.polito.ai.lab03.service;
 
-import it.polito.ai.lab03.dbinteractions.Position;
-import org.springframework.stereotype.Service;
+import it.polito.ai.lab03.repository.Position;
 
 import java.util.List;
 
-@Service
 public class PositionService {
     public PositionService(){
 

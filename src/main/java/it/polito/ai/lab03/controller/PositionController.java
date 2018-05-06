@@ -1,6 +1,6 @@
 package it.polito.ai.lab03.controller;
 
-import it.polito.ai.lab03.dbinteractions.Position;
+import it.polito.ai.lab03.repository.Position;
 import it.polito.ai.lab03.service.PositionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,8 +20,12 @@ import java.util.List;
 @RequestMapping("/positions")
 public class PositionController {
 
-    @Autowired
     private PositionService positionService;
+
+    @Autowired
+    public PositionController(PositionService ps) {
+        this.positionService = ps;
+    }
 
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.OK)

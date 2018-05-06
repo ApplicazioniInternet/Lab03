@@ -1,6 +1,5 @@
-package it.polito.ai.lab03.configuration;
+package it.polito.ai.lab03.service;
 
-import it.polito.ai.lab03.service.PositionService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -14,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class ServiceFactory {
 
-    @Bean(name="PositionService")
+    @Bean
     public PositionService getPositionService(){
         // Di modo da potere iniettare un service per le position
         return new PositionService();
