@@ -1,6 +1,7 @@
 package it.polito.ai.lab03.repository;
 
 public class Position {
+
     private double latitude;
     private double longitude;
     private long timestamp;

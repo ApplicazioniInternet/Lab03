@@ -3,7 +3,7 @@ package it.polito.ai.lab03.controller;
 import it.polito.ai.lab03.repository.Position;
 import it.polito.ai.lab03.service.PositionService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
+import com.fasterxml.jackson.databind.deser.impl.CreatorCandidate.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
