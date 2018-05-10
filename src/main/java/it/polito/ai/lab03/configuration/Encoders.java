@@ -7,7 +7,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 /**
  * Classe che ritorna degli encoders per la password
  */
-public class Encoder {
+public class Encoders {
 
     @Bean
     public PasswordEncoder passwordEncoder(){

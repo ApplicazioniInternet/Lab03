@@ -4,8 +4,10 @@ import it.polito.ai.lab03.repository.Position;
 import it.polito.ai.lab03.service.PositionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,8 +21,9 @@ import java.util.List;
  *      1) un PositionService, che è una classe appartenente allo strato di servizio, la quale sarà responsabile
  *         di fornire i metodi per potere accedere al data layer per riuscire ad ottenere i dati.
  */
+
 @RestController
-@RequestMapping("/positions")
+@RequestMapping("/secured/positions")
 public class PositionController {
 
     private PositionService positionService;
@@ -46,7 +49,9 @@ public class PositionController {
             method = RequestMethod.POST
     )
     @ResponseStatus(value = HttpStatus.CREATED)
-    public void addPosition(@Param(value = "position") Position position) {
+    public ResponseEntity<?> addPosition(@Param(value = "position") Position positionId, @RequestBody Position position) {
+        HttpHeaders headers = new HttpHeaders();
+        return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
 
     // Credo sia così che funzioni la questione dei path. Questo si aggiunge a quello della classe
@@ -54,8 +59,9 @@ public class PositionController {
             path = "/{id}",
             method = RequestMethod.GET
     )
-    @ResponseStatus(value = HttpStatus.CREATED)
-    public void getPosition(@PathVariable(value = "id") long positionId) {
+    @ResponseStatus(value = HttpStatus.OK)
+    public Position getPosition(@PathVariable(value = "id") long positionId) {
+        return null;
     }
 
     @RequestMapping(
@@ -63,6 +69,6 @@ public class PositionController {
             method = RequestMethod.PUT
     )
     @ResponseStatus(value = HttpStatus.CREATED)
-    public void updatePosition(@PathVariable(value = "id") long positionId) {
+    public void updatePosition(@PathVariable(value = "id") long positionId, @RequestBody Position position) {
     }
 }
