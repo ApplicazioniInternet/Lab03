@@ -1,4 +1,4 @@
-package it.polito.ai.lab03.repository;
+package it.polito.ai.lab03.configuration;
 
 import com.mongodb.Mongo;
 import com.mongodb.MongoClient;
@@ -11,11 +11,11 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 public class MongoConfig {
 
     public @Bean Mongo mongo() throws Exception {
-        return new Mongo(new ServerAddress("localhost", 27017));
+        return new Mongo(new ServerAddress("127.0.0.1", 27017));
     }
 
     public @Bean MongoTemplate mongoTemplate() throws Exception{
-        return new MongoTemplate((MongoClient) mongo(), "bugged-group");
+        return new MongoTemplate((MongoClient) mongo(), "db");
     }
 
 }

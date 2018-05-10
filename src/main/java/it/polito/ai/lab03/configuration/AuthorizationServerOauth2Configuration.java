@@ -30,7 +30,6 @@ public class AuthorizationServerOauth2Configuration extends AuthorizationServerC
 
     @Bean
     public TokenStore tokenStore() {
-        // Per fare capire a Spring che deve usare il db per i tokens
         return null;
     }
 

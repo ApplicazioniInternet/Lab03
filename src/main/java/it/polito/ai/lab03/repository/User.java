@@ -1,7 +1,6 @@
 package it.polito.ai.lab03.repository;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
@@ -10,7 +9,6 @@ import java.util.List;
 public class User {
 
     @Id
-    @Indexed(unique = true)
     private String username;
 
     private String password;

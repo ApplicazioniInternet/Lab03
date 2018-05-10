@@ -1,8 +1,11 @@
 package it.polito.ai.lab03.repository;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.stereotype.Repository;
+
 import java.util.List;
 
+@Repository
 public interface UserRepo extends MongoRepository<User, String> {
 
     /*
@@ -20,11 +23,13 @@ public interface UserRepo extends MongoRepository<User, String> {
     List<User> findUsersByRole(String role);
 
     /*
-    * qualche metodo a caso giusto per testing
-    */
+     * qualche metodo a caso giusto per testing
+     */
 
     List<User> findUsersByLastAccessAfter(long access);
+
     List<User> findUsersByLastAccessBefore(long access);
+
     List<User> findUsersByLastAccessAfterAndLastAccessBefore(long access1, long access2);
 
 }
