@@ -8,11 +8,13 @@ package it.polito.ai.lab03.utils;
 public class Constants {
     // Oauth2 rules
     public static final String SECURED_READ_SCOPE = "#oauth2.hasScope('read')";
+
     // Endpoints url
     public static final String SECURE_GENERAL = "/secured/**";
     public static final String SECURED_USER_PATTERN = "/secured/user/positions/**"; // Solo per user, get e post positions
     public static final String SECURED_CUSTOMER_PATTERN = "/secured/customer/**"; // Solo per customer, solo per post, per comprare posizioni
     public static final String SECURED_ADMIN_PATTERN = "/secured/admin/**"; // No post!
+
     // Roles
     private static final String ADMIN = "ADMIN";
     public static final String SECURED_WRITE_SCOPE_ADMIN = "#oauth2.hasRole(" + ADMIN + ").hasScope('write')";
@@ -23,4 +25,8 @@ public class Constants {
     private static final String USER = "USER";
     public static final String SECURED_READ_SCOPE_USER = "#oauth2.hasRole(" + USER + ").hasScope('read')";
     public static final String SECURED_WRITE_SCOPE_USER = "#oauth2.hasRole(" + USER + ").hasScope('write')";
+
+    // Db informations
+    public static final String DATABASE_URI = "mongodb://localhost:27017";
+    public static final String DATABASE_NAME = "db";
 }

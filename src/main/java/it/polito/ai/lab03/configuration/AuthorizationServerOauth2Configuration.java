@@ -1,6 +1,6 @@
 package it.polito.ai.lab03.configuration;
 
-import it.polito.ai.lab03.service.UserDetailsImpl;
+import it.polito.ai.lab03.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,7 +23,7 @@ import org.springframework.security.oauth2.provider.token.TokenStore;
 @EnableAuthorizationServer
 public class AuthorizationServerOauth2Configuration extends AuthorizationServerConfigurerAdapter {
     @Autowired
-    private UserDetailsImpl userDetailsService;
+    private UserDetailsServiceImpl userDetailsService;
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -46,7 +46,6 @@ public class AuthorizationServerOauth2Configuration extends AuthorizationServerC
                 .userDetailsService(userDetailsService); // Come data source prendi quella da userDetails service
     }
 
-    // BOOOOH
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         super.configure(clients);

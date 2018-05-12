@@ -1,6 +1,6 @@
 package it.polito.ai.lab03.configuration;
 
-import it.polito.ai.lab03.service.UserDetailsImpl;
+import it.polito.ai.lab03.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
@@ -19,7 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Import(Encoders.class)
 public class ServerSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
-    private UserDetailsImpl userDetailsService;
+    private UserDetailsServiceImpl userDetailsService;
 
     @Autowired
     private PasswordEncoder userPasswordEncoder;

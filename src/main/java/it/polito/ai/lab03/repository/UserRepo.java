@@ -13,8 +13,8 @@ public interface UserRepo extends MongoRepository<User, String> {
      * le prendo dall'oggetto User che ha il metodo
      */
 
-    User findUserByUsernameAndPassword(String username, String password);
-
+    //User findUserByUsernameAndPassword(String username, String password);
+    User findUserByUsername(String username);
     /*
      * per controllare le logiche relative agli utenti
      * posso prendere gli utenti con un determinato ruolo

@@ -1,28 +1,40 @@
 package it.polito.ai.lab03.repository;
 
+import org.apache.tomcat.jni.Time;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.authentication.UserCredentials;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
-@Document(collection = "user")
-public class User {
+@Document(collection = "users")
+public class User implements UserDetails {
 
     @Id
-    private String username;
-
-    private String password;
+    private int userId;
+    private UserCredentials userCredentials;
     private long lastAccess;
     private Role role;
     private List<Position> allPositions;
 
     public User() {
+
     }
 
     public User(String username, String password, Role role) {
-        this.username = username;
-        this.password = password;
+        this.userCredentials = new UserCredentials(username, password);
         this.role = role;
+        this.lastAccess = Time.now();
+        userId = this.hashCode();
+
+    }
+
+    public int getUserId() {
+        return userId;
     }
 
     // getters and setters
@@ -36,19 +48,11 @@ public class User {
     public void setRole(Role role) { this.role = role; }
 
     public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
+        return userCredentials.getUsername();
     }
 
     public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
+        return userCredentials.getPassword();
     }
 
     public List<Position> getAllPositions() {
@@ -64,12 +68,47 @@ public class User {
     }
 
     @Override
-    public String toString() {
-        return this.username + " => " + this.password + " => " + this.role;
+    public boolean isAccountNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return false;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return false;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
+        User user = (User) o;
+        return getLastAccess() == user.getLastAccess() &&
+                Objects.equals(userCredentials, user.userCredentials) &&
+                getRole() == user.getRole() &&
+                Objects.equals(getAllPositions(), user.getAllPositions());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(userCredentials, getLastAccess(), getRole(), getAllPositions());
     }
 
     public enum Role {
         ADMIN, USER, CUSTOMER
     }
-
 }

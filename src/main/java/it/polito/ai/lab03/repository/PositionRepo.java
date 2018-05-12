@@ -6,9 +6,11 @@ import java.util.List;
 
 public interface PositionRepo extends MongoRepository<Position, User> {
 
-    public List<Position> findPositionsByLatitudeAndAndLongitude(double latitude, double longitude);
-    public List<Position> findPositionsByTimestampAfter(long timestamp);
-    public List<Position> findPositionsByTimestampBefore(long timestamp);
-    public List<Position> findPositionsByTimestampBeforeAndTimestampAfter(long t1, long t2);
+    List<Position> findPositionsByLatitudeAndAndLongitude(double latitude, double longitude);
 
+    List<Position> findPositionsByTimestampAfter(long timestamp);
+
+    List<Position> findPositionsByTimestampBefore(long timestamp);
+
+    List<Position> findPositionsByTimestampBeforeAndTimestampAfter(long t1, long t2);
 }
