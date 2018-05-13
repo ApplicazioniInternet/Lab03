@@ -1,8 +1,8 @@
 package it.polito.ai.lab03.repository;
 
 import org.apache.tomcat.jni.Time;
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.authentication.UserCredentials;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,8 +15,9 @@ import java.util.Objects;
 public class User implements UserDetails {
 
     @Id
-    private int userId;
-    private UserCredentials userCredentials;
+    private ObjectId id;
+    private String username;
+    private String password;
     private long lastAccess;
     private Role role;
     private List<Position> allPositions;
@@ -26,15 +27,10 @@ public class User implements UserDetails {
     }
 
     public User(String username, String password, Role role) {
-        this.userCredentials = new UserCredentials(username, password);
+        this.username = username;
+        this.password = password;
         this.role = role;
         this.lastAccess = Time.now();
-        userId = this.hashCode();
-
-    }
-
-    public int getUserId() {
-        return userId;
     }
 
     // getters and setters
@@ -48,11 +44,11 @@ public class User implements UserDetails {
     public void setRole(Role role) { this.role = role; }
 
     public String getUsername() {
-        return userCredentials.getUsername();
+        return this.username;
     }
 
     public String getPassword() {
-        return userCredentials.getPassword();
+        return this.password;
     }
 
     public List<Position> getAllPositions() {
@@ -69,22 +65,22 @@ public class User implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return true;
     }
 
     @Override
@@ -98,14 +94,17 @@ public class User implements UserDetails {
         if (!(o instanceof User)) return false;
         User user = (User) o;
         return getLastAccess() == user.getLastAccess() &&
-                Objects.equals(userCredentials, user.userCredentials) &&
+                Objects.equals(id, user.id) &&
+                Objects.equals(getUsername(), user.getUsername()) &&
+                Objects.equals(getPassword(), user.getPassword()) &&
                 getRole() == user.getRole() &&
                 Objects.equals(getAllPositions(), user.getAllPositions());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(userCredentials, getLastAccess(), getRole(), getAllPositions());
+
+        return Objects.hash(id, getUsername(), getPassword(), getLastAccess(), getRole(), getAllPositions());
     }
 
     public enum Role {

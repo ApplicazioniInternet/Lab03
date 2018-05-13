@@ -29,4 +29,7 @@ public class Constants {
     // Db informations
     public static final String DATABASE_URI = "mongodb://localhost:27017";
     public static final String DATABASE_NAME = "db";
+
+    // Chiavi
+    public static final String SIMMETRIC_KEY = "chiave-simmetrica";
 }

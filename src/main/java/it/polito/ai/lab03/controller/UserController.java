@@ -15,12 +15,8 @@ import java.util.List;
 @RequestMapping("/users")
 public class UserController {
 
-    private PositionService positionService;
-
     @Autowired
-    public UserController(PositionService ps) {
-        this.positionService = ps;
-    }
+    private PositionService positionService;
 
     // Restituisce una collezione di positions
     @RequestMapping(
