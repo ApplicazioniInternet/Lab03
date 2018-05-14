@@ -14,22 +14,6 @@ public interface UserRepo extends MongoRepository<User, String> {
      */
 
     //User findUserByUsernameAndPassword(String username, String password);
-    User findUserByUsername(String username);
-    /*
-     * per controllare le logiche relative agli utenti
-     * posso prendere gli utenti con un determinato ruolo
-     */
-
-    List<User> findUsersByRole(String role);
-
-    /*
-     * qualche metodo a caso giusto per testing
-     */
-
-    List<User> findUsersByLastAccessAfter(long access);
-
-    List<User> findUsersByLastAccessBefore(long access);
-
-    List<User> findUsersByLastAccessAfterAndLastAccessBefore(long access1, long access2);
+    User findByUsername(String username);
 
 }

@@ -15,76 +15,57 @@ import java.util.Objects;
 public class User implements UserDetails {
 
     @Id
-    private int userId;
-    private UserCredentials userCredentials;
-    private long lastAccess;
-    private Role role;
-    private List<Position> allPositions;
+    private String id;
 
-    public User() {
+    private String username;
+    private String password;
+    private boolean accountExpired;
 
+    public User() {}
+
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
     }
 
-    public User(String username, String password, Role role) {
-        this.userCredentials = new UserCredentials(username, password);
-        this.role = role;
-        this.lastAccess = Time.now();
-        userId = this.hashCode();
-
+    public String getId() {
+        return id;
     }
 
-    public int getUserId() {
-        return userId;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    // getters and setters
-
-    public long getLastAccess() { return lastAccess; }
-
-    public void setLastAccess(long lastAccess) { this.lastAccess = lastAccess; }
-
-    public Role getRole() { return role; }
-
-    public void setRole(Role role) { this.role = role; }
-
+    @Override
     public String getUsername() {
-        return userCredentials.getUsername();
+        return username;
     }
 
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    @Override
     public String getPassword() {
-        return userCredentials.getPassword();
+        return password;
     }
 
-    public List<Position> getAllPositions() {
-        return allPositions;
-    }
-
-    public void addPosition(Position position) {
-        this.allPositions.add(position);
-    }
-
-    public void addPositions(List<Position> positions) {
-        this.allPositions.addAll(positions);
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     @Override
-    public boolean isAccountNonExpired() {
-        return false;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return false;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return false;
+    public String toString() {
+        return "User{" +
+                "id='" + id + '\'' +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                '}';
     }
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return true;
     }
 
     @Override
@@ -93,22 +74,18 @@ public class User implements UserDetails {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof User)) return false;
-        User user = (User) o;
-        return getLastAccess() == user.getLastAccess() &&
-                Objects.equals(userCredentials, user.userCredentials) &&
-                getRole() == user.getRole() &&
-                Objects.equals(getAllPositions(), user.getAllPositions());
+    public boolean isCredentialsNonExpired() {
+        return true;
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(userCredentials, getLastAccess(), getRole(), getAllPositions());
+    public boolean isAccountNonExpired() {
+        return true;
     }
 
-    public enum Role {
-        ADMIN, USER, CUSTOMER
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
     }
+
 }
