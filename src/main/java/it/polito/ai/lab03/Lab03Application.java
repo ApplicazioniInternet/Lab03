@@ -3,8 +3,10 @@ package it.polito.ai.lab03;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 
 @SpringBootApplication
+@EnableAuthorizationServer
 @ComponentScan("it.polito.ai.lab03")
 public class Lab03Application {
 

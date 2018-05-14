@@ -7,6 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -16,14 +17,17 @@ public class User implements UserDetails {
 
     @Id
     private ObjectId id;
+
+    private Collection<GrantedAuthority> authorities = new ArrayList<>();
     private String username;
     private String password;
     private long lastAccess;
     private Role role;
     private List<Position> allPositions;
 
-    public User() {
-
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
     }
 
     public User(String username, String password, Role role) {
@@ -34,6 +38,10 @@ public class User implements UserDetails {
     }
 
     // getters and setters
+
+    public void setAuthorities(Collection<GrantedAuthority> authorities) {
+        this.authorities = authorities;
+    }
 
     public long getLastAccess() { return lastAccess; }
 

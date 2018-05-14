@@ -30,6 +30,10 @@ public class Constants {
     public static final String DATABASE_URI = "mongodb://localhost:27017";
     public static final String DATABASE_NAME = "db";
 
-    // Chiavi
-    public static final String SIMMETRIC_KEY = "chiave-simmetrica";
+    // Chiavi e segreti client
+    public static final String SIMMETRIC_KEY = "chiave-simmetrica"; // Avrei potuto usare chiave privata e pubblica, ma troppo sbatti
+    public static final String ASYMMETRIC_PRIVATE_KEY = ""; // Vista solamente dall'authorization server
+    public static final String ASYMMETRIC_PUBLIC_KEY = ""; // Solo la chiave pubblica deve essere condivisa con il resource server
+    public static final String CLIENT_ID = "client-app";
+    public static final String CLIENT_SECRET = "segreto";
 }
