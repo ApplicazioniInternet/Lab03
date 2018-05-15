@@ -1,15 +1,11 @@
 package it.polito.ai.lab03.repository;
 
-import org.apache.tomcat.jni.Time;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.authentication.UserCredentials;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
 
 @Document(collection = "users")
 public class User implements UserDetails {
@@ -20,6 +16,7 @@ public class User implements UserDetails {
     private String username;
     private String password;
     private boolean accountExpired;
+    private String role;
 
     public User() {}
 
@@ -87,5 +84,6 @@ public class User implements UserDetails {
     public boolean isAccountNonLocked() {
         return true;
     }
+
 
 }

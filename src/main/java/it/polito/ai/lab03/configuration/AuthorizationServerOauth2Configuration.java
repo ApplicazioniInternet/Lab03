@@ -43,11 +43,6 @@ public class AuthorizationServerOauth2Configuration extends AuthorizationServerC
     }
 
     @Bean
-    public JwtAccessTokenConverter accessTokenConverter() {
-        return new JwtAccessTokenConverter();
-    }
-
-    @Bean
     public OAuth2AccessDeniedHandler oauthAccessDeniedHandler() {
         // Così ci pensa lui per i fatti suoi
         return new OAuth2AccessDeniedHandler();
@@ -61,6 +56,7 @@ public class AuthorizationServerOauth2Configuration extends AuthorizationServerC
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
         endpoints.tokenStore(tokenStore()) // Usa il token dal database
+                .tokenEnhancer(accessTokenConverter())
                 .authenticationManager(authenticationManager) // Usa il mio custom authentication manager per autenticare gli utenti
                 .userDetailsService(userDetailsService); // Come data source prendi quella da userDetails service
     }
@@ -72,5 +68,10 @@ public class AuthorizationServerOauth2Configuration extends AuthorizationServerC
                 .authorizedGrantTypes("password", "authorization_code", "refresh_token", "implicit")
                 .scopes("read", "write")
                 .secret("$2a$04$u7AkEd1xISJiIMLbi0BKIeRRpkViEu6Hk0nxBe.LpMrsySFWb/IkG");
+    }
+
+    @Bean
+    public JwtAccessTokenConverter accessTokenConverter() {
+        return new CustomTokenEnhancer();
     }
 }
