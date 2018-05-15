@@ -18,6 +18,7 @@ public class CustomTokenEnhancer extends JwtAccessTokenConverter {
         final Map<String, Object> additionalInfo = new HashMap<String, Object>();
 
         additionalInfo.put("username", user.getUsername());
+        additionalInfo.put("role", user.getRole());
 
         ((DefaultOAuth2AccessToken) accessToken)
                 .setAdditionalInformation(additionalInfo);

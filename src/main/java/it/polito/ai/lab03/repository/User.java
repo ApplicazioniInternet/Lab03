@@ -6,6 +6,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.List;
 
 @Document(collection = "users")
 public class User implements UserDetails {
@@ -16,7 +17,18 @@ public class User implements UserDetails {
     private String username;
     private String password;
     private boolean accountExpired;
+
+    private List<GrantedAuthority> authorities;
+
+    public String getRole() {
+        return role;
+    }
+
     private String role;
+
+    public void setRole(String role) {
+        this.role = role;
+    }
 
     public User() {}
 
@@ -52,22 +64,13 @@ public class User implements UserDetails {
     }
 
     @Override
-    public String toString() {
-        return "User{" +
-                "id='" + id + '\'' +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                '}';
-    }
-
-    @Override
     public boolean isEnabled() {
         return true;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return authorities;
     }
 
     @Override
@@ -84,6 +87,5 @@ public class User implements UserDetails {
     public boolean isAccountNonLocked() {
         return true;
     }
-
 
 }

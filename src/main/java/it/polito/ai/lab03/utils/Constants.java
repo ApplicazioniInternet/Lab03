@@ -16,13 +16,13 @@ public class Constants {
     public static final String SECURED_ADMIN_PATTERN = "/secured/admin/**"; // No post!
 
     // Roles
-    private static final String ADMIN = "ADMIN";
-    public static final String SECURED_WRITE_SCOPE_ADMIN = "#oauth2.hasRole(" + ADMIN + ").hasScope('write')";
-    public static final String SECURED_READ_SCOPE_ADMIN = "#oauth2.hasRole(" + ADMIN + ").hasScope('read')";
-    private static final String CUSTOMER = "CUSTOMER";
-    public static final String SECURED_WRITE_SCOPE_CUSTOMER = "#oauth2.hasRole(" + CUSTOMER + ").hasScope('write')";
-    public static final String SECURED_READ_SCOPE_CUSTOMER = "#oauth2.hasRole(" + CUSTOMER + ").hasScope('read')";
-    private static final String USER = "USER";
+    private static final String ROLE_ADMIN = "ROLE_ADMIN";
+    public static final String SECURED_WRITE_SCOPE_ADMIN = "#oauth2.hasRole(" + ROLE_ADMIN + ").hasScope('write')";
+    public static final String SECURED_READ_SCOPE_ADMIN = "#oauth2.hasRole(" + ROLE_ADMIN + ").hasScope('read')";
+    private static final String ROLE_CUSTOMER = "ROLE_CUSTOMER";
+    public static final String SECURED_WRITE_SCOPE_CUSTOMER = "#oauth2.hasRole(" + ROLE_CUSTOMER + ").hasScope('write')";
+    public static final String SECURED_READ_SCOPE_CUSTOMER = "#oauth2.hasRole(" + ROLE_CUSTOMER + ").hasScope('read')";
+    private static final String USER = "ROLE_USER";
     public static final String SECURED_READ_SCOPE_USER = "#oauth2.hasRole(" + USER + ").hasScope('read')";
     public static final String SECURED_WRITE_SCOPE_USER = "#oauth2.hasRole(" + USER + ").hasScope('write')";
 

@@ -3,7 +3,6 @@ package it.polito.ai.lab03.service;
 import it.polito.ai.lab03.repository.User;
 import it.polito.ai.lab03.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -24,7 +23,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public User loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username);
-        System.out.println(user);
         if (user != null) {
             return user;
         }
