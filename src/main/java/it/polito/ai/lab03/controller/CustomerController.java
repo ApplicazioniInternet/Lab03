@@ -1,8 +1,10 @@
 package it.polito.ai.lab03.controller;
 
-import it.polito.ai.lab03.repository.Position;
+import it.polito.ai.lab03.repository.model.AreaRequest;
+import it.polito.ai.lab03.repository.model.Position;
 import it.polito.ai.lab03.service.PositionService;
 import it.polito.ai.lab03.service.UserDetailsServiceImpl;
+import it.polito.ai.lab03.utils.IAuthorizationFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -15,51 +17,61 @@ import java.util.List;
 public class CustomerController {
 
     private PositionService positionService;
-    private UserDetailsServiceImpl userService;
+    private IAuthorizationFacade authorizationFacade;
 
     @Autowired
-    public CustomerController(PositionService ps, UserDetailsServiceImpl us) {
+    public CustomerController(PositionService ps, UserDetailsServiceImpl us, IAuthorizationFacade iaf) {
         this.positionService = ps;
-        this.userService=us;
+        this.authorizationFacade = iaf;
     }
 
-    /*
-    Ritorna la lista delle position acquistate
-    Probabilmente meglio che nel db siano direttamente aggiunte allo user/customer visto che tali position
-    saranno di user diversi e sarebbe un casino reperirle diversamente
+    /**
+     * Ritorna la lista delle position acquistate
+     *
+     * @return List<Position> --> lista delle posizioni acquistate da un certo customer
      */
     @RequestMapping(
-            path = "/{customerId}/positions",
+            path = "/positions",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ResponseStatus(value = HttpStatus.OK)
     public @ResponseBody
-    List<Position> getPositionBought(@PathVariable(value = "customerId") String username) {
-        //Sarà tipo return userService.getPositionsBoughtForUser(username);
-        return null;
+    List<Position> getPositionBought() {
+        String username = authorizationFacade.getAuthorization().getPrincipal().toString();
+        return positionService.getPositionsForUser(username);
     }
 
-    /*
-    Poichè il customer non penso possa postare posizioni, si potrebbe usare la POST sulla stessa
-    URL /{customerId}/positions con un significato totalmente diverso. Cioè postare il poligono in cui
-    si vuole sapere il numero do positions presenti per un eventuale acquisto (ache per non avere troppe URL diverse)
+    /**
+     * Poichè il customer non penso possa postare posizioni, si potrebbe usare la POST sulla stessa
+     * URL /{customerId}/positions con un significato totalmente diverso. Cioè postare il poligono in cui
+     * si vuole sapere il numero do positions presenti per un eventuale acquisto (ache per non avere troppe URL diverse)
      */
     @RequestMapping(
-            path = "/{customerId}/positions",
+            path = "/positions/list",
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    @ResponseStatus(value = HttpStatus.OK)
+    @ResponseStatus(value = HttpStatus.CREATED)
     public @ResponseBody
-    int getPositionQuantityInArea() {
-        //In realtà qua il customerId non serve a nulla
-        return 0;
+    List<Position> getPositionInArea(@RequestBody AreaRequest locationRequest) {
+        return positionService.getPositionsInArea(locationRequest);
+    }
+
+    @RequestMapping(
+            path = "/positions/count",
+            method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @ResponseStatus(value = HttpStatus.CREATED)
+    public @ResponseBody
+    int getPositionQuantityInArea(@RequestBody AreaRequest locationRequest) {
+        return positionService.getNumberPositionsInArea(locationRequest);
     }
 
 
     @RequestMapping(
-            path = "/{customerId}/transactions",
+            path = "/transactions",
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE
     )

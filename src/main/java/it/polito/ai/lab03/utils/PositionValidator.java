@@ -1,7 +1,7 @@
 package it.polito.ai.lab03.utils;
 
-import it.polito.ai.lab03.repository.Position;
 import it.polito.ai.lab03.repository.PositionRepository;
+import it.polito.ai.lab03.repository.model.Position;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

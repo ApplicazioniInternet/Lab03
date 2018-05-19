@@ -1,7 +1,8 @@
 package it.polito.ai.lab03.controller;
 
-import it.polito.ai.lab03.repository.Position;
+import it.polito.ai.lab03.repository.model.Position;
 import it.polito.ai.lab03.service.PositionService;
+import it.polito.ai.lab03.utils.IAuthorizationFacade;
 import it.polito.ai.lab03.utils.PositionValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,7 +10,6 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.NotAcceptableStatusException;
 
-import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -18,17 +18,18 @@ public class UserController {
 
     private PositionService positionService;
     private PositionValidator positionValidator;
+    private IAuthorizationFacade authorizationFacade;
 
     @Autowired
-    public UserController(PositionService ps, PositionValidator pv) {
+    public UserController(PositionService ps, PositionValidator pv, IAuthorizationFacade iaf) {
         this.positionService = ps;
         this.positionValidator = pv;
+        this.authorizationFacade = iaf;
     }
 
     /**
      * Funzione per prendere tutte le posizioni dell'utente con il dato token
      *
-     * @param principal --> le informazioni sul token che è arrivato con la richiesta
      * @return List<Position> --> lista delle posizioni dell'utente
      */
     @RequestMapping(
@@ -38,8 +39,9 @@ public class UserController {
     )
     @ResponseStatus(value = HttpStatus.OK)
     public @ResponseBody
-    List<Position> getAll(Principal principal) {
-        return positionService.getPositionsForUser(principal.getName());
+    List<Position> getAll() {
+        String username = authorizationFacade.getAuthorization().getPrincipal().toString();
+        return positionService.getPositionsForUser(username);
     }
 
     /**
@@ -47,16 +49,16 @@ public class UserController {
      * la richiesta
      *
      * @param position  --> è la posizione che vuole aggiungere l'utente
-     * @param principal --> le informazioni sul token che è arrivato con la richiesta
      */
     @RequestMapping(
             path = "/positions",
             method = RequestMethod.POST
     )
     @ResponseStatus(value = HttpStatus.CREATED)
-    public void addPosition(@RequestBody Position position, Principal principal) {
-        position.setUserId(principal.getName());
-        if (positionValidator.isValidPosition(position, principal.getName()))
+    public void addPosition(@RequestBody Position position) {
+        String username = authorizationFacade.getAuthorization().getPrincipal().toString();
+        position.setUserId(username);
+        if (positionValidator.isValidPosition(position, username))
             positionService.insertPosition(position);
         else
             throw new NotAcceptableStatusException("La posizione inserita non è valida.");

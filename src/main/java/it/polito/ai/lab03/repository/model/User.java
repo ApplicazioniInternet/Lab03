@@ -1,4 +1,4 @@
-package it.polito.ai.lab03.repository;
+package it.polito.ai.lab03.repository.model;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;

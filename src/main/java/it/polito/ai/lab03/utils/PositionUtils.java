@@ -1,6 +1,6 @@
 package it.polito.ai.lab03.utils;
 
-import it.polito.ai.lab03.repository.Position;
+import it.polito.ai.lab03.repository.model.Position;
 
 class PositionUtils {
     // Uso formula di haversine

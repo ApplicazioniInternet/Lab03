@@ -1,6 +1,6 @@
-package it.polito.ai.lab03.repository;
+package it.polito.ai.lab03.repository.model;
 
-import com.mongodb.client.model.geojson.Point;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 import org.springframework.data.mongodb.core.index.GeoSpatialIndexType;
 import org.springframework.data.mongodb.core.index.GeoSpatialIndexed;
@@ -10,6 +10,9 @@ import java.util.Objects;
 
 @Document(collection = "positions")
 public class Position {
+
+    @Id
+    private String id;
 
     private double latitude;
     private double longitude;
@@ -40,7 +43,7 @@ public class Position {
         return Objects.hash(getLatitude(), getLongitude(), getTimestamp(), getUserId());
     }
 
-    public String getUserId() {
+    private String getUserId() {
 
         return userId;
     }
@@ -63,24 +66,12 @@ public class Position {
         return latitude;
     }
 
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
-    }
-
     public double getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
-    }
-
     public long getTimestamp() {
         return timestamp;
-    }
-
-    public void setTimestamp(long timestamp) {
-        this.timestamp = timestamp;
     }
 
     public GeoJsonPoint getLocation() {
