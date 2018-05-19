@@ -1,5 +1,9 @@
 package it.polito.ai.lab03.repository;
 
+import com.mongodb.client.model.geojson.Point;
+import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
+import org.springframework.data.mongodb.core.index.GeoSpatialIndexType;
+import org.springframework.data.mongodb.core.index.GeoSpatialIndexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Objects;
@@ -11,6 +15,13 @@ public class Position {
     private double longitude;
     private long timestamp;
     private String userId;
+
+    /*
+    Per le query geografiche non si possono usare long e lat come due double ma servono tipi di geoJson
+    Probabilmente long e lat si potrebbero togliere
+     */
+    @GeoSpatialIndexed(type=GeoSpatialIndexType.GEO_2DSPHERE)
+    private GeoJsonPoint location;
 
     @Override
     public boolean equals(Object o) {
@@ -45,6 +56,7 @@ public class Position {
         this.latitude = latitude;
         this.longitude = longitude;
         this.timestamp = timestamp;
+        this.location = new GeoJsonPoint(longitude, latitude);
     }
 
     public double getLatitude() {
@@ -69,5 +81,13 @@ public class Position {
 
     public void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public GeoJsonPoint getLocation() {
+        return location;
+    }
+
+    public void setLocation(GeoJsonPoint location) {
+        this.location = location;
     }
 }
