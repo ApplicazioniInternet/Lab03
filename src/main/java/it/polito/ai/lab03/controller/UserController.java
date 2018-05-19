@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/secured/users")
 public class UserController {
 
     private PositionService positionService;
@@ -24,39 +24,40 @@ public class UserController {
 
     // Restituisce una collezione di positions
     @RequestMapping(
-            path = "/positions",
+            path = "/{userId}/positions",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ResponseStatus(value = HttpStatus.OK)
     public @ResponseBody
-    List<Position> getAll() { // Bisognerebbe creare la classe Position che risiede nel data layer.
-        return positionService.getAll();
+    List<Position> getAll(@PathVariable(value = "userId") String username) {
+        return positionService.getPositionsForUser(username);
     }
 
     // Aggiungiamo una posizione a quelle che già abbiamo
     @RequestMapping(
-            path = "/positions",
+            path = "/{userId}/positions",
             method = RequestMethod.POST
     )
     @ResponseStatus(value = HttpStatus.CREATED)
-    public void addPosition(@RequestParam(value = "position") Position position, @AuthenticationPrincipal User principal) {
+    public void addPosition(@PathVariable(value = "userId") String username, @RequestBody Position position, @AuthenticationPrincipal User principal) {
+        positionService.insertPosition(position);
     }
 
     // Credo sia così che funzioni la questione dei path. Questo si aggiunge a quello della classe
     @RequestMapping(
-            path = "/positions/{id}",
+            path = "/{userId}/positions/{id}",
             method = RequestMethod.GET
     )
     @ResponseStatus(value = HttpStatus.CREATED)
-    public void getPosition(@PathVariable(value = "id") long positionId) {
+    public void getPosition(@PathVariable(value = "userId") String username, @PathVariable(value = "id") long positionId) {
     }
 
     @RequestMapping(
-            path = "/positions/{id}",
+            path = "/{userId}/positions/{id}",
             method = RequestMethod.PUT
     )
     @ResponseStatus(value = HttpStatus.CREATED)
-    public void updatePosition(@PathVariable(value = "id") long positionId) {
+    public void updatePosition(@PathVariable(value = "userId") String username, @PathVariable(value = "id") long positionId) {
     }
 }

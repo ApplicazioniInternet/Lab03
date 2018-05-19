@@ -10,7 +10,7 @@ public class Constants {
     // Endpoints url
     public static final String SECURED_USER_PATTERN = "/users/positions/**"; // Solo per user, get e post positions
     public static final String SECURED_CUSTOMER_PATTERN = "/customer/**"; // Solo per customer, solo per post, per comprare posizioni
-    public static final String SECURED_ADMIN_PATTERN = "/**"; // No post!
+    public static final String SECURED_ADMIN_PATTERN = "/secured/admin/**"; // No post!
 
     // Roles
     public static final String ROLE_ADMIN = "ROLE_ADMIN";
@@ -20,4 +20,9 @@ public class Constants {
     // Db informations
     public static final String DATABASE_URI = "mongodb://localhost";
     public static final String DATABASE_NAME = "db";
+
+    // Configuration
+    public static final String CLIENT_SECRET = "$2a$04$u7AkEd1xISJiIMLbi0BKIeRRpkViEu6Hk0nxBe.LpMrsySFWb/IkG";
+    public static final String SIMMETRIC_KEY = "keysegretissima";
+    public static final String CLIENT_ID = "client";
 }

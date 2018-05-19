@@ -20,5 +20,4 @@ public class MongoConfig {
     MongoTemplate mongoTemplate() {
         return new MongoTemplate(mongo(), Constants.DATABASE_NAME);
     }
-
 }

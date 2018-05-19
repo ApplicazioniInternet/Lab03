@@ -1,6 +1,7 @@
 package it.polito.ai.lab03.configuration;
 
 import it.polito.ai.lab03.service.UserDetailsServiceImpl;
+import it.polito.ai.lab03.utils.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -34,14 +35,17 @@ import java.util.Arrays;
 @EnableAuthorizationServer
 @Import(ServerSecurityConfig.class)
 public class AuthorizationServerOauth2Configuration extends AuthorizationServerConfigurerAdapter {
-    @Autowired
+
     private UserDetailsServiceImpl userDetailsService;
-
-    @Autowired
     private AuthenticationManager authenticationManager;
+    private PasswordEncoder oauthClientPasswordEncoder;
 
     @Autowired
-    private PasswordEncoder oauthClientPasswordEncoder;
+    public AuthorizationServerOauth2Configuration(UserDetailsServiceImpl udsi, AuthenticationManager am, PasswordEncoder pe) {
+        this.userDetailsService = udsi;
+        this.authenticationManager = am;
+        this.oauthClientPasswordEncoder = pe;
+    }
 
     @Bean
     public TokenStore tokenStore() {
@@ -60,7 +64,7 @@ public class AuthorizationServerOauth2Configuration extends AuthorizationServerC
     }
 
     @Override
-    public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
+    public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
         TokenEnhancerChain tokenEnhancerChain = new TokenEnhancerChain();
         tokenEnhancerChain.setTokenEnhancers(
                 Arrays.asList(tokenEnhancer(), accessTokenConverter()));
@@ -74,16 +78,17 @@ public class AuthorizationServerOauth2Configuration extends AuthorizationServerC
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         clients.inMemory()
-                .withClient("client")
+                .withClient(Constants.CLIENT_ID)
                 .authorizedGrantTypes("password", "authorization_code", "refresh_token", "implicit")
                 .scopes("read", "write")
-                .secret("$2a$04$u7AkEd1xISJiIMLbi0BKIeRRpkViEu6Hk0nxBe.LpMrsySFWb/IkG");
+                .secret(Constants.CLIENT_SECRET);
     }
 
     @Bean
     public JwtAccessTokenConverter accessTokenConverter() {
         JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
-        converter.setSigningKey("keysegretissima");
+        converter.setSigningKey(Constants.SIMMETRIC_KEY);
+        converter.setVerifierKey(Constants.SIMMETRIC_KEY);
         return converter;
     }
 
