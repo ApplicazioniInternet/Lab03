@@ -48,7 +48,7 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
         http.requestMatchers()
                 .and().authorizeRequests()
                 .antMatchers(Constants.SECURED_USER_PATTERN)
-                .hasAnyAuthority(Constants.ROLE_USER, Constants.ROLE_CUSTOMER, Constants.ROLE_ADMIN)
+                .hasAnyAuthority(Constants.ROLE_USER, Constants.ROLE_ADMIN)
                 .antMatchers(Constants.SECURED_CUSTOMER_PATTERN)
                 .hasAnyAuthority(Constants.ROLE_CUSTOMER, Constants.ROLE_ADMIN)
                 .antMatchers(Constants.SECURED_ADMIN_PATTERN)

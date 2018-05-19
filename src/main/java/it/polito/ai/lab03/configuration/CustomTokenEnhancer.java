@@ -15,10 +15,10 @@ public class CustomTokenEnhancer implements TokenEnhancer {
                                      OAuth2Authentication authentication) {
 
         User user = (User) authentication.getPrincipal();
-        final Map<String, Object> additionalInfo = new HashMap<String, Object>();
+        final Map<String, Object> additionalInfo = new HashMap<>();
 
         additionalInfo.put("authorities", user.getRole());
-
+        additionalInfo.put("username", user.getUsername());
         ((DefaultOAuth2AccessToken) accessToken)
                 .setAdditionalInformation(additionalInfo);
 

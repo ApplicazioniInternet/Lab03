@@ -8,8 +8,8 @@ package it.polito.ai.lab03.utils;
 public class Constants {
 
     // Endpoints url
-    public static final String SECURED_USER_PATTERN = "/users/positions/**"; // Solo per user, get e post positions
-    public static final String SECURED_CUSTOMER_PATTERN = "/customer/**"; // Solo per customer, solo per post, per comprare posizioni
+    public static final String SECURED_USER_PATTERN = "/secured/user/**"; // Solo per user, get e post positions
+    public static final String SECURED_CUSTOMER_PATTERN = "/secured/customer/**"; // Solo per customer, solo per post, per comprare posizioni
     public static final String SECURED_ADMIN_PATTERN = "/secured/admin/**"; // No post!
 
     // Roles
@@ -25,4 +25,10 @@ public class Constants {
     public static final String CLIENT_SECRET = "$2a$04$u7AkEd1xISJiIMLbi0BKIeRRpkViEu6Hk0nxBe.LpMrsySFWb/IkG";
     public static final String SIMMETRIC_KEY = "keysegretissima";
     public static final String CLIENT_ID = "client";
+
+    // Costanti per posizioni e calcolo con formula di Haversine
+    static final double validValueLowerBound = -180;
+    static final double validValueUpperBound = 180;
+    static final long minTimestamp = 1522000000;
+    static final double MAX_SPEED = 100;
 }
