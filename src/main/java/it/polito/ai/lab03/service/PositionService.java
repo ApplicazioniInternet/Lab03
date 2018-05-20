@@ -46,6 +46,11 @@ public class PositionService {
     }
 
     public int getNumberPositionsInArea(AreaRequest locationRequest) {
-        return getPositionsInArea(locationRequest).size();
+        return positionRepository
+                .countByLocationIsWithinAndTimestampAfterAndTimestampBefore(
+                        locationRequest.getPolygon(),
+                        locationRequest.getTimestampBefore(),
+                        locationRequest.getTimestampAfter()
+                );
     }
 }
