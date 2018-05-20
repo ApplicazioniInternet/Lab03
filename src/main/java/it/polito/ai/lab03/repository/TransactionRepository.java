@@ -15,4 +15,6 @@ public interface TransactionRepository extends MongoRepository<Transaction, Stri
     List<Transaction> findAllBySellerId(@NonNull String sellerId);
 
     List<Transaction> findAllByTimestampBefore(@NonNull long timestampBefore);
+
+    Transaction insert(@NonNull Transaction transaction);
 }

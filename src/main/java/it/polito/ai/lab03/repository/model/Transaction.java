@@ -20,6 +20,14 @@ public class Transaction {
 
     private long timestamp;
 
+    public Transaction(String buyerId, String sellerId, List<Position> boughtPositions, double pricePaid, long timestamp) {
+        this.buyerId = buyerId;
+        this.sellerId = sellerId;
+        this.boughtPositions = boughtPositions;
+        this.pricePaid = pricePaid;
+        this.timestamp = timestamp;
+    }
+
     private String getId() {
 
         return id;

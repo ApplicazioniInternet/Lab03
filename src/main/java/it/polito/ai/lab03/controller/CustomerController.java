@@ -43,9 +43,8 @@ public class CustomerController {
     }
 
     /**
-     * Poichè il customer non penso possa postare posizioni, si potrebbe usare la POST sulla stessa
-     * URL /{customerId}/positions con un significato totalmente diverso. Cioè postare il poligono in cui
-     * si vuole sapere il numero do positions presenti per un eventuale acquisto (ache per non avere troppe URL diverse)
+     * Questo metodo poichè ritorna una lista di posizioni dato un poligono, deve essere l'acquisto
+     * Due possibili ResponseStatus a seconda che lácquisto sia andato a buon fine o meno
      */
     @RequestMapping(
             path = "/positions/list",
@@ -55,7 +54,19 @@ public class CustomerController {
     @ResponseStatus(value = HttpStatus.CREATED)
     public @ResponseBody
     List<Position> getPositionInArea(@RequestBody AreaRequest locationRequest) {
-        return positionService.getPositionsInArea(locationRequest);
+        //Ricavo l'username per passarlo al service layer in modo da settare il buyer nella transazione
+        String username = authorizationFacade.getAuthorization().getPrincipal().toString();
+        /*
+        Bisognerebbe verificare se la transazione è andata a buon fine e in caso contrario dare un messaggio di errore.
+        Possibili errori:
+        - area non valida (bad request)
+        - nessuna posizione in quell'area (si può anche tornare un ok e lista vuota)
+        - soldi non sufficienti per transazione (che errore? forse forbidden?)
+        - transazione fallita (internal server error)
+         */
+
+        //return positionService.getPositionsInArea(locationRequest);
+        return positionService.buyPositionsInArea(locationRequest, username);
     }
 
     @RequestMapping(

@@ -31,4 +31,7 @@ public class Constants {
     static final double validValueUpperBound = 180;
     static final long minTimestamp = 1522000000;
     static final double MAX_SPEED = 100;
+
+    //Il prezzo dellácquisto di una singola position per ora lo metterei costante
+    public static final double priceSinglePosition = 1.00;
 }

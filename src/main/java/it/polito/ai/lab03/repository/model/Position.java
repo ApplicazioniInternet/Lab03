@@ -43,10 +43,7 @@ public class Position {
         return Objects.hash(getLatitude(), getLongitude(), getTimestamp(), getUserId());
     }
 
-    private String getUserId() {
-
-        return userId;
-    }
+    public String getUserId() { return userId; }
 
     public void setUserId(String userId) {
         this.userId = userId;
