@@ -17,6 +17,15 @@ public class Transaction {
 
     private List<Position> boughtPositions;
     private double pricePaid;
+    private double revenueForUser;
+
+    public double getRevenueForUser() {
+        return revenueForUser;
+    }
+
+    public void setRevenueForUser(double revenueForUser) {
+        this.revenueForUser = revenueForUser;
+    }
 
     private long timestamp;
 

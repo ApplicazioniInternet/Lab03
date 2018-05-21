@@ -17,7 +17,7 @@ public class User implements UserDetails {
     private String username;
     private String password;
     private boolean accountExpired;
-
+    private List<Position> positions;
     private List<GrantedAuthority> authorities;
 
     public String getRole() {

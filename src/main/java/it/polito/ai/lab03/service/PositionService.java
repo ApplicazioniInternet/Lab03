@@ -2,17 +2,16 @@ package it.polito.ai.lab03.service;
 
 import it.polito.ai.lab03.repository.PositionRepository;
 import it.polito.ai.lab03.repository.TransactionRepository;
+import it.polito.ai.lab03.repository.UserRepository;
 import it.polito.ai.lab03.repository.model.AreaRequest;
 import it.polito.ai.lab03.repository.model.Position;
 import it.polito.ai.lab03.repository.model.Transaction;
 import it.polito.ai.lab03.utils.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.geo.GeoJsonPolygon;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 @Service
@@ -20,15 +19,17 @@ public class PositionService {
 
     private PositionRepository positionRepository;
     private TransactionRepository transactionRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    public PositionService(PositionRepository pr, TransactionRepository tr) {
+    public PositionService(PositionRepository pr, UserRepository ur, TransactionRepository tr) {
         this.positionRepository = pr;
-        this.transactionRepository=tr;
+        this.transactionRepository = tr;
+        this.userRepository = ur;
 
     }
 
-    public List<Position> getAll(){
+    public List<Position> getAll() {
         return positionRepository.findAll();
     }
 
@@ -40,7 +41,7 @@ public class PositionService {
         positionRepository.insert(position);
     }
 
-    public List<Position> getPositionsInArea(AreaRequest locationRequest) {
+    private List<Position> getPositionsInArea(AreaRequest locationRequest) {
         return positionRepository
                 .findByLocationIsWithinAndTimestampAfterAndTimestampBefore(
                         locationRequest.getPolygon(),
@@ -58,28 +59,27 @@ public class PositionService {
                 );
     }
 
-    public List<Position> buyPositionsInArea(AreaRequest locationRequest, String buyer){
+    public List<Position> buyPositionsInArea(AreaRequest locationRequest, String buyer) {
         List<Position> positions = getPositionsInArea(locationRequest);
         //Divido la lista di posizioni da acquistare in liste divise per owner
-        Map<String, List<Position>> ownerPosition = positions.stream()
+        Map<String, List<Position>> positionsListPerOwner = positions.stream()
                 .collect(Collectors.groupingBy(Position::getUserId, Collectors.toList()));
 
         //Per ogni utente diverso che possiede le position che voglio comprare devo fare una transazione
-        for(String owner : ownerPosition.keySet()){
+        for (String owner : positionsListPerOwner.keySet()) {
             /*
             QUI ANDREBBE RICHIAMATO IL METODO PER FARE IL PAGAMENTO !!!
             Se va storto o eccezione o ritornare null da gestire nel controller per settare status code
              */
 
             //Attualmente il prezzo penso sia sensato che sia costante * numero di posizioni acquistate
-            double pricePayd = Constants.priceSinglePosition * ownerPosition.get(owner).size();
+            double pricePayd = Constants.priceSinglePosition * positionsListPerOwner.get(owner).size();
+            double revenueUser = Constants.percentageToUser * (Constants.priceSinglePosition * positionsListPerOwner.get(owner).size());
             //Costruzione della transazione (id autogenerato dal DB)
-            Transaction transaction = new Transaction(buyer, owner, ownerPosition.get(owner), pricePayd, (System.currentTimeMillis() / 1000L));
+            Transaction transaction = new Transaction(buyer, owner, positionsListPerOwner.get(owner), pricePayd, (System.currentTimeMillis() / 1000L));
+            transaction.setRevenueForUser(revenueUser);
             transactionRepository.insert(transaction);
-            /*
-            Una volta che la transazione va a buon fine ed è stata registrata si possono considerare acquistate le positions
-            e vanno aggiunte come comprate dal customer...
-             */
+            userRepository.updateByUsernamePositions(buyer, positionsListPerOwner.get(owner));
         }
         return positions;
     }

@@ -34,4 +34,5 @@ public class Constants {
 
     //Il prezzo dellácquisto di una singola position per ora lo metterei costante
     public static final double priceSinglePosition = 1.00;
+    public static final double percentageToUser = 0.70;
 }
