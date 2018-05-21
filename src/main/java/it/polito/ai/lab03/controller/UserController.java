@@ -61,6 +61,6 @@ public class UserController {
         if (positionValidator.isValidPosition(position, username))
             positionService.insertPosition(position);
         else
-            throw new NotAcceptableStatusException("La posizione inserita non è valida.");
+            throw new NotAcceptableStatusException("La posizione inserita non è valida."); // 406
     }
 }
