@@ -14,34 +14,11 @@ public class Position {
     @Id
     private String id;
 
-    private double latitude;
-    private double longitude;
     private long timestamp;
     private String userId;
 
-    /*
-    Per le query geografiche non si possono usare long e lat come due double ma servono tipi di geoJson
-    Probabilmente long e lat si potrebbero togliere
-     */
-    @GeoSpatialIndexed(type=GeoSpatialIndexType.GEO_2DSPHERE)
+    @GeoSpatialIndexed(type = GeoSpatialIndexType.GEO_2DSPHERE)
     private GeoJsonPoint location;
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Position)) return false;
-        Position position = (Position) o;
-        return Double.compare(position.getLatitude(), getLatitude()) == 0 &&
-                Double.compare(position.getLongitude(), getLongitude()) == 0 &&
-                getTimestamp() == position.getTimestamp() &&
-                Objects.equals(getUserId(), position.getUserId());
-    }
-
-    @Override
-    public int hashCode() {
-
-        return Objects.hash(getLatitude(), getLongitude(), getTimestamp(), getUserId());
-    }
 
     public String getUserId() { return userId; }
 
@@ -50,32 +27,70 @@ public class Position {
     }
 
     public Position() {
+        this.location = new GeoJsonPoint(0, 0);
     }
 
-    public Position(double latitude, double longitude, long timestamp) {
-        this.latitude = latitude;
-        this.longitude = longitude;
+    public Position(GeoJsonPoint point, long timestamp) {
         this.timestamp = timestamp;
-        this.location = new GeoJsonPoint(longitude, latitude);
+        this.location = point;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
     }
 
     public double getLatitude() {
-        return latitude;
+        return location.getY();
     }
 
     public double getLongitude() {
-        return longitude;
+        return location.getX();
     }
 
     public long getTimestamp() {
         return timestamp;
     }
 
-    public GeoJsonPoint getLocation() {
+    private GeoJsonPoint getLocation() {
         return location;
     }
 
     public void setLocation(GeoJsonPoint location) {
         this.location = location;
+    }
+
+    @Override
+    public String toString() {
+        return "Position{" +
+                "id='" + id + '\'' +
+                ", timestamp=" + timestamp +
+                ", userId='" + userId + '\'' +
+                ", location=" + location +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Position)) return false;
+        Position position = (Position) o;
+        return getTimestamp() == position.getTimestamp() &&
+                Objects.equals(id, position.id) &&
+                Objects.equals(getUserId(), position.getUserId()) &&
+                Objects.equals(getLocation(), position.getLocation());
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(id, getTimestamp(), getUserId(), getLocation());
     }
 }

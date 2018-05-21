@@ -35,7 +35,7 @@ public class CustomerController {
      * @return List<Position> --> lista delle posizioni acquistate da un certo customer
      */
     @RequestMapping(
-            path = "/positions",
+            path = "/positions/purchased",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
@@ -51,7 +51,7 @@ public class CustomerController {
      * Due possibili ResponseStatus a seconda che lácquisto sia andato a buon fine o meno
      */
     @RequestMapping(
-            path = "/positions/list",
+            path = "/positions/buy",
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
@@ -74,7 +74,7 @@ public class CustomerController {
     }
 
     @RequestMapping(
-            path = "/positions/count",
+            path = "/positions/buy/count",
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
@@ -90,7 +90,7 @@ public class CustomerController {
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    @ResponseStatus(value = HttpStatus.ACCEPTED)
+    @ResponseStatus(value = HttpStatus.OK)
     public @ResponseBody
     List<Transaction> getTransactions() {
         String username = authorizationFacade.getAuthorization().getPrincipal().toString();

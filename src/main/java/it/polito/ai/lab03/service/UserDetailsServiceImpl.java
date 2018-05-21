@@ -1,6 +1,7 @@
 package it.polito.ai.lab03.service;
 
 import it.polito.ai.lab03.repository.UserRepository;
+import it.polito.ai.lab03.repository.model.Position;
 import it.polito.ai.lab03.repository.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -38,5 +39,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     public User getUser(String user) {
         return userRepository.findByUsername(user);
+    }
+
+    void updateByUsernamePositions(String buyer, List<Position> positions) {
+        User user = userRepository.findByUsername(buyer);
+        user.setPositions(positions);
+
+        userRepository.save(user);
     }
 }

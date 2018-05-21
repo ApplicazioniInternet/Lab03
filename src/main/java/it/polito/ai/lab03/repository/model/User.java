@@ -18,6 +18,18 @@ public class User implements UserDetails {
     private String password;
     private boolean accountExpired;
     private List<Position> positions;
+
+    public List<Position> getPositions() {
+        return positions;
+    }
+
+    public void setPositions(List<Position> positions) {
+        if (this.positions == null)
+            this.positions = positions;
+        else
+            this.positions.addAll(positions);
+    }
+
     private List<GrantedAuthority> authorities;
 
     public String getRole() {

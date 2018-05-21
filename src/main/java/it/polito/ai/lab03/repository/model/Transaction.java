@@ -29,7 +29,7 @@ public class Transaction {
 
     private long timestamp;
 
-    public Transaction(String buyerId, String sellerId, List<Position> boughtPositions, double pricePaid, long timestamp) {
+    public Transaction(String buyerId, String sellerId, List<Position> boughtPositions, double pricePaid, double revenueForUser, long timestamp) {
         this.buyerId = buyerId;
         this.sellerId = sellerId;
         this.boughtPositions = boughtPositions;

@@ -19,4 +19,8 @@ public class TransactionService {
     public List<Transaction> getTransactionsPerUser(String username) {
         return transactionRepository.findAllByBuyerId(username);
     }
+
+    void insert(Transaction transaction) {
+        transactionRepository.insert(transaction);
+    }
 }

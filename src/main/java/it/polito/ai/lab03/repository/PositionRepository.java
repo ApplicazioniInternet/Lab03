@@ -17,11 +17,9 @@ public interface PositionRepository extends MongoRepository<Position, User> {
     List<Position> findPositionsByTimestampBeforeAndTimestampAfter(@NonNull long t1, @NonNull long t2);
     Position insert(@NonNull Position position);
 
-    int countByLocationIsWithinAndTimestampAfterAndTimestampBefore(@NonNull GeoJsonPolygon area, @NonNull long timestampStart, @NonNull long timestampEnd);
+    int countByLocationIsWithinAndTimestampBetween(@NonNull GeoJsonPolygon area, @NonNull double timestamp1, @NonNull double timestamp2);
 
-    List<Position> findByLocationIsWithinAndTimestampAfterAndTimestampBefore(@NonNull GeoJsonPolygon area, @NonNull long timestampStart, @NonNull long timestampEnd);
-
+    List<Position> findByLocationIsWithinAndTimestampBetween(@NonNull GeoJsonPolygon area, @NonNull long timestampStart, @NonNull long timestampEnd);
     Position deletePositionById(@NonNull String positionId);
-
     List<Position> deletePositionByUserId(@NonNull String userId);
 }

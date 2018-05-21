@@ -1,8 +1,6 @@
 package it.polito.ai.lab03.service;
 
 import it.polito.ai.lab03.repository.PositionRepository;
-import it.polito.ai.lab03.repository.TransactionRepository;
-import it.polito.ai.lab03.repository.UserRepository;
 import it.polito.ai.lab03.repository.model.AreaRequest;
 import it.polito.ai.lab03.repository.model.Position;
 import it.polito.ai.lab03.repository.model.Transaction;
@@ -18,14 +16,14 @@ import java.util.stream.Collectors;
 public class PositionService {
 
     private PositionRepository positionRepository;
-    private TransactionRepository transactionRepository;
-    private UserRepository userRepository;
+    private TransactionService transactionService;
+    private UserDetailsServiceImpl userDetailsService;
 
     @Autowired
-    public PositionService(PositionRepository pr, UserRepository ur, TransactionRepository tr) {
+    public PositionService(PositionRepository pr, UserDetailsServiceImpl uds, TransactionService tr) {
         this.positionRepository = pr;
-        this.transactionRepository = tr;
-        this.userRepository = ur;
+        this.transactionService = tr;
+        this.userDetailsService = uds;
 
     }
 
@@ -43,8 +41,8 @@ public class PositionService {
 
     private List<Position> getPositionsInArea(AreaRequest locationRequest) {
         return positionRepository
-                .findByLocationIsWithinAndTimestampAfterAndTimestampBefore(
-                        locationRequest.getPolygon(),
+                .findByLocationIsWithinAndTimestampBetween(
+                        locationRequest.getArea(),
                         locationRequest.getTimestampBefore(),
                         locationRequest.getTimestampAfter()
                 );
@@ -52,10 +50,10 @@ public class PositionService {
 
     public int getNumberPositionsInArea(AreaRequest locationRequest) {
         return positionRepository
-                .countByLocationIsWithinAndTimestampAfterAndTimestampBefore(
-                        locationRequest.getPolygon(),
-                        locationRequest.getTimestampBefore(),
-                        locationRequest.getTimestampAfter()
+                .countByLocationIsWithinAndTimestampBetween(
+                        locationRequest.getArea(),
+                        locationRequest.getTimestampAfter(),
+                        locationRequest.getTimestampBefore()
                 );
     }
 
@@ -67,19 +65,13 @@ public class PositionService {
 
         //Per ogni utente diverso che possiede le position che voglio comprare devo fare una transazione
         for (String owner : positionsListPerOwner.keySet()) {
-            /*
-            QUI ANDREBBE RICHIAMATO IL METODO PER FARE IL PAGAMENTO !!!
-            Se va storto o eccezione o ritornare null da gestire nel controller per settare status code
-             */
-
             //Attualmente il prezzo penso sia sensato che sia costante * numero di posizioni acquistate
-            double pricePayd = Constants.priceSinglePosition * positionsListPerOwner.get(owner).size();
+            double pricePaid = Constants.priceSinglePosition * positionsListPerOwner.get(owner).size();
             double revenueUser = Constants.percentageToUser * (Constants.priceSinglePosition * positionsListPerOwner.get(owner).size());
             //Costruzione della transazione (id autogenerato dal DB)
-            Transaction transaction = new Transaction(buyer, owner, positionsListPerOwner.get(owner), pricePayd, (System.currentTimeMillis() / 1000L));
-            transaction.setRevenueForUser(revenueUser);
-            transactionRepository.insert(transaction);
-            userRepository.updateByUsernamePositions(buyer, positionsListPerOwner.get(owner));
+            Transaction transaction = new Transaction(buyer, owner, positionsListPerOwner.get(owner), pricePaid, revenueUser, (System.currentTimeMillis() / 1000L));
+            transactionService.insert(transaction);
+            userDetailsService.updateByUsernamePositions(buyer, positionsListPerOwner.get(owner));
         }
         return positions;
     }
