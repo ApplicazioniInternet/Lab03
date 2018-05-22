@@ -1,6 +1,7 @@
 package it.polito.ai.lab03.service;
 
 import it.polito.ai.lab03.repository.PositionRepository;
+import it.polito.ai.lab03.repository.TransactionRepository;
 import it.polito.ai.lab03.repository.model.AreaRequest;
 import it.polito.ai.lab03.repository.model.Position;
 import it.polito.ai.lab03.repository.model.Transaction;
@@ -16,13 +17,13 @@ import java.util.stream.Collectors;
 public class PositionService {
 
     private PositionRepository positionRepository;
-    private TransactionService transactionService;
+    private TransactionRepository transactionRepository;
     private UserDetailsServiceImpl userDetailsService;
 
     @Autowired
-    public PositionService(PositionRepository pr, UserDetailsServiceImpl uds, TransactionService tr) {
+    public PositionService(PositionRepository pr, UserDetailsServiceImpl uds, TransactionRepository tr) {
         this.positionRepository = pr;
-        this.transactionService = tr;
+        this.transactionRepository = tr;
         this.userDetailsService = uds;
 
     }
@@ -70,7 +71,7 @@ public class PositionService {
             double revenueUser = Constants.percentageToUser * (Constants.priceSinglePosition * positionsListPerOwner.get(owner).size());
             //Costruzione della transazione (id autogenerato dal DB)
             Transaction transaction = new Transaction(buyer, owner, positionsListPerOwner.get(owner), pricePaid, revenueUser, (System.currentTimeMillis() / 1000L));
-            transactionService.insert(transaction);
+            transactionRepository.insert(transaction);
             userDetailsService.updateByUsernamePositions(buyer, positionsListPerOwner.get(owner));
         }
         return positions;
