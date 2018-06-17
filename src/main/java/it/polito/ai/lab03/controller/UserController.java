@@ -1,6 +1,7 @@
 package it.polito.ai.lab03.controller;
 
 import it.polito.ai.lab03.repository.model.Position;
+import it.polito.ai.lab03.repository.model.Positions;
 import it.polito.ai.lab03.service.PositionService;
 import it.polito.ai.lab03.utils.IAuthorizationFacade;
 import it.polito.ai.lab03.utils.PositionValidator;
@@ -48,19 +49,24 @@ public class UserController {
      * Funzione per aggiungere una posizione all'utente che possiede il token che ci viene dato con
      * la richiesta
      *
-     * @param position  --> è la posizione che vuole aggiungere l'utente
+     * @param positions  --> è la posizione che vuole aggiungere l'utente
      */
     @RequestMapping(
             path = "/positions",
             method = RequestMethod.POST
     )
     @ResponseStatus(value = HttpStatus.CREATED)
-    public void addPosition(@RequestBody Position position) {
+    public void addPosition(@RequestBody Positions positions) {
         String username = authorizationFacade.getAuthorization().getPrincipal().toString();
-        position.setUserId(username);
-        if (positionValidator.isValidPosition(position, username))
-            positionService.insertPosition(position);
-        else
-            throw new NotAcceptableStatusException("La posizione inserita non è valida."); // 406
+        List<Position> ps;
+
+        ps = positions.getPositions();
+        ps.forEach( (position) -> {
+            position.setUserId(username);
+            if (positionValidator.isValidPosition(position, username))
+                positionService.insertPosition(position);
+            else
+                throw new NotAcceptableStatusException("La posizione inserita non è valida."); // 406
+        });
     }
 }
