@@ -62,7 +62,7 @@ public class Transaction {
         this.sellerId = sellerId;
     }
 
-    private List<Position> getBoughtPositions() {
+    public List<Position> getBoughtPositions() {
         return boughtPositions;
     }
 

@@ -13,6 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(path = "/secured/customer")
@@ -69,7 +70,7 @@ public class CustomerController {
         - transazione fallita (internal server error)
          */
 
-        //return positionService.getPositionsInArea(locationRequest);
+        System.err.println(locationRequest.toString());
         return positionService.buyPositionsInArea(locationRequest, username);
     }
 
@@ -95,5 +96,22 @@ public class CustomerController {
     List<Transaction> getTransactions() {
         String username = authorizationFacade.getAuthorization().getPrincipal().toString();
         return transactionService.getTransactionsPerUser(username);
+    }
+
+    /**
+     * Funzione per ritornare la collection di tutte le posizioni salvate nel nostro database
+     * Non so però quanto sia utile, nel dubbio ce la lasciamo
+     *
+     * @return List<Position> --> lista delle posizioni
+     */
+    @RequestMapping(
+            path = "/buyable/positions",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @ResponseStatus(value = HttpStatus.OK)
+    public @ResponseBody
+    List<Position> getAllPosition() {
+        return positionService.getAll();
     }
 }
