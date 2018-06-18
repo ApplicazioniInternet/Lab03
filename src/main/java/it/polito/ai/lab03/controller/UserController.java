@@ -63,7 +63,9 @@ public class UserController {
         ps = positions.getPositions();
         ps.forEach( (position) -> {
             position.setUserId(username);
-            if (positionValidator.isValidPosition(position, username))
+            boolean condition = positionValidator.isValidPosition(position, username);
+            System.err.println(condition);
+            if (condition)
                 positionService.insertPosition(position);
             else
                 throw new NotAcceptableStatusException("La posizione inserita non è valida."); // 406

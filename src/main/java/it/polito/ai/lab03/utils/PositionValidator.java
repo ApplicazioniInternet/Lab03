@@ -27,7 +27,7 @@ public class PositionValidator {
 
         if (lastPosition != null) {
             double distance = PositionUtils.getDistanceBetween(lastPosition, postedPosition); // Calcolo la distanza tra le due e poi la velocità
-            speed = (distance * 1000) / (postedPosition.getTimestamp() - lastPosition.getTimestamp()) * 1000; // Perché il timestamp è in millisecondi!!! La formula ritorna i KM
+            speed = (distance * 1000) / (postedPosition.getTimestamp() - lastPosition.getTimestamp()); // Perché il timestamp è in millisecondi!!! La formula ritorna i KM
         }
 
         /*
@@ -36,12 +36,13 @@ public class PositionValidator {
          * controllo che il timestamp non sia inferiore al valore di quando abbaimo iniziato il progetto -> passato (si puù anche usare un vaalore più basso
          * controllo che il timestamp non sia maggiore al valore di quando faccio il controlllo -> futuro
          */
-        return !(speed > Constants.MAX_SPEED) &&
-                Double.compare(postedPosition.getLongitude(), Constants.validValueLowerBound) >= 0 &&
-                Double.compare(postedPosition.getLongitude(), Constants.validValueUpperBound) <= 0 &&
-                Double.compare(postedPosition.getLatitude(), Constants.validValueLowerBound) >= 0 &&
-                Double.compare(postedPosition.getLatitude(), Constants.validValueUpperBound) <= 0 &&
-                Long.compare(postedPosition.getTimestamp(), Constants.minTimestamp) >= 0 &&
+        System.err.println("Valid speed: " + speed);
+        return speed <= Constants.MAX_SPEED &&
+                Double.compare(postedPosition.getLongitude(), Constants.validValueLowerBoundLongitude) >= 0 &&
+                Double.compare(postedPosition.getLongitude(), Constants.validValueUpperBoundLongitude) <= 0 &&
+                Double.compare(postedPosition.getLatitude(), Constants.validValueLowerBoundLatitude) >= 0 &&
+                Double.compare(postedPosition.getLatitude(), Constants.validValueUpperBoundLatitude) <= 0 &&
+                Long.compare(postedPosition.getTimestamp(), Constants.minTimestamp/1000) >= 0 &&
                 Long.compare(postedPosition.getTimestamp(), maxTimestamp) <= 0;
     }
 
