@@ -87,7 +87,7 @@ public class PositionService {
             //Costruzione della transazione (id autogenerato dal DB)
             Transaction transaction = new Transaction(buyer, owner, positionsListPerOwner.get(owner), pricePaid, revenueUser, (System.currentTimeMillis() / 1000L));
             transactionRepository.insert(transaction);
-            userDetailsService.updateByUsernamePositions(buyer, positionsListPerOwner.get(owner));
+            //userDetailsService.updateByUsernamePositions(buyer, positionsListPerOwner.get(owner));
         }
         return positions;
     }
