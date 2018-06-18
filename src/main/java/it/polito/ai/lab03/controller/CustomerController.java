@@ -70,7 +70,6 @@ public class CustomerController {
         - transazione fallita (internal server error)
          */
 
-        System.err.println(locationRequest.toString());
         return positionService.buyPositionsInArea(locationRequest, username);
     }
 

@@ -48,4 +48,13 @@ public class AreaRequest {
 
         return Objects.hash(getArea(), getTimestampBefore(), getTimestampAfter());
     }
+
+    @Override
+    public String toString() {
+        return "AreaRequest{" +
+                "area=" + area +
+                ", timestampBefore=" + timestampBefore +
+                ", timestampAfter=" + timestampAfter +
+                '}';
+    }
 }

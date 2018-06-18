@@ -9,6 +9,7 @@ import it.polito.ai.lab03.utils.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -33,7 +34,15 @@ public class PositionService {
     }
 
     public List<Position> getPositionsForUser(String user) {
-        return positionRepository.findPositionsByUserId(user);
+        List<Position> toBeReturned = new ArrayList<>();
+        this.transactionRepository.findAllByBuyerId(user)
+                .stream().map(Transaction::getBoughtPositions)
+                .forEach(list -> {
+                    for(Position p : list) {
+                        toBeReturned.add(p);
+                    }
+                });
+        return toBeReturned;
     }
 
     public void insertPosition(Position position) {
@@ -44,8 +53,8 @@ public class PositionService {
         return positionRepository
                 .findByLocationIsWithinAndTimestampBetween(
                         locationRequest.getArea(),
-                        locationRequest.getTimestampBefore(),
-                        locationRequest.getTimestampAfter()
+                        locationRequest.getTimestampAfter(),
+                        locationRequest.getTimestampBefore()
                 );
     }
 
@@ -63,7 +72,6 @@ public class PositionService {
         //Divido la lista di posizioni da acquistare in liste divise per owner
         Map<String, List<Position>> positionsListPerOwner = positions.stream()
                 .collect(Collectors.groupingBy(Position::getUserId, Collectors.toList()));
-
         //Per ogni utente diverso che possiede le position che voglio comprare devo fare una transazione
         for (String owner : positionsListPerOwner.keySet()) {
             //Attualmente il prezzo penso sia sensato che sia costante * numero di posizioni acquistate
