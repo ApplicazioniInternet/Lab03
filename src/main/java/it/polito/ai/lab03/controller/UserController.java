@@ -64,7 +64,6 @@ public class UserController {
         ps.forEach( (position) -> {
             position.setUserId(username);
             boolean condition = positionValidator.isValidPosition(position, username);
-            System.err.println(condition);
             if (condition)
                 positionService.insertPosition(position);
             else

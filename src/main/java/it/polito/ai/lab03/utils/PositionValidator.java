@@ -36,7 +36,6 @@ public class PositionValidator {
          * controllo che il timestamp non sia inferiore al valore di quando abbaimo iniziato il progetto -> passato (si puù anche usare un vaalore più basso
          * controllo che il timestamp non sia maggiore al valore di quando faccio il controlllo -> futuro
          */
-        System.err.println("Valid speed: " + speed);
         return speed <= Constants.MAX_SPEED &&
                 Double.compare(postedPosition.getLongitude(), Constants.validValueLowerBoundLongitude) >= 0 &&
                 Double.compare(postedPosition.getLongitude(), Constants.validValueUpperBoundLongitude) <= 0 &&

@@ -34,12 +34,17 @@ public class PositionService {
     }
 
     public List<Position> getPositionsForUser(String user) {
+        return positionRepository.findPositionsByUserId(user);
+    }
+
+    public List<Position> getPositionsBoughtCustomer(String user) {
         List<Position> toBeReturned = new ArrayList<>();
         this.transactionRepository.findAllByBuyerId(user)
                 .stream().map(Transaction::getBoughtPositions)
                 .forEach(list -> {
                     for(Position p : list) {
                         toBeReturned.add(p);
+                        System.err.println(p);
                     }
                 });
         return toBeReturned;
@@ -69,6 +74,8 @@ public class PositionService {
 
     public List<Position> buyPositionsInArea(AreaRequest locationRequest, String buyer) {
         List<Position> positions = getPositionsInArea(locationRequest);
+        System.err.println(locationRequest.toString());
+        System.err.println("Positions in area: " + positions.size());
         //Divido la lista di posizioni da acquistare in liste divise per owner
         Map<String, List<Position>> positionsListPerOwner = positions.stream()
                 .collect(Collectors.groupingBy(Position::getUserId, Collectors.toList()));

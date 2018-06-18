@@ -44,7 +44,7 @@ public class CustomerController {
     public @ResponseBody
     List<Position> getPositionBought() {
         String username = authorizationFacade.getAuthorization().getPrincipal().toString();
-        return positionService.getPositionsForUser(username);
+        return positionService.getPositionsBoughtCustomer(username);
     }
 
     /**
